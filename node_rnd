@@ -1,0 +1,34 @@
+issue:Uncaught Error: Module did not self-register
+solution:If you've upgraded node then npm rebuild might fix this for you
+
+issue:nodejs Error: listen EADDRINUSE
+fuser -n tcp -k portno
+
+run mongo shell
+
+Qest. upstart & node.js app “stop: Unknown instance:”
+Ans.	Restarting the init process cleared everything up.
+
+	sudo /sbin/telinit q
+
+	I needed to kill the rogue instance of my app. After that, using start and stop worked as expected.
+
+#######start upstart ##########
+
+description "App Server"
+author "Stefan Fidanov <fidanov@terlici.com>"
+
+start on (filesystem and net-device-up IFACE=lo)
+stop on runlevel [!2345]
+
+respawn
+
+env PORT=5000
+
+chdir /opt/app/
+exec node app.js
+########end upstart ########## 
+
+npm install mongoose-reverse-populate@0.1.0
+
+

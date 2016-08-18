@@ -1,0 +1,74 @@
+
+# update field and add new field
+db.clients.update({"_id" : ObjectId("576bb26a0a957df967642769")},{$set:{"add_date":"Wed Jun 29 2016 13:59:37 GMT+0530 (IST)"}})
+
+Same as the updating existing collection field, $set will add a new fields if the specified field does not exist.
+
+Check out the sample
+
+> db.foo.find()
+> db.foo.insert({"test":"a"})
+> db.foo.find()
+{ "_id" : ObjectId("4e93037bbf6f1dd3a0a9541a"), "test" : "a" }
+> item = db.foo.findOne()
+{ "_id" : ObjectId("4e93037bbf6f1dd3a0a9541a"), "test" : "a" }
+> db.foo.update({"_id" :ObjectId("4e93037bbf6f1dd3a0a9541a") },{$set : {"new_field":1}})
+> db.foo.find()
+{ "_id" : ObjectId("4e93037bbf6f1dd3a0a9541a"), "new_field" : 1, "test" : "a" }
+## find latest
+db.questions.find().limit(1).sort({$natural:-1}).pretty()
+db.users.update({"_id" : ObjectId("578f424998ce7f7e6f4e90a5")},{unset:{questions:1,answer:1}})
+Question 
+
+{
+    name: 'myDoc',
+    list: [
+        {
+            id:1
+            items:[
+                {id:1, name:'item1'},
+                {id:2, name:'item2'}
+            ]
+        },
+        {
+            id:2
+            items:[
+                {id:1, name:'item1'},
+                {id:3, name:'item3'}
+            ]
+        }
+    ]
+}
+
+I found a way to add an element to 'list' using '$addToSet' but I couldn't find a way to add to a specific list of 'items' an item.
+
+e.g. I get the following:
+
+{id:5, name:'item5'} 
+
+and I want to add it to the element's item in the list with id:2.
+
+answer 
+db.col.update(
+    { name: 'doc', 'list.id': 2 }, 
+    {$push: {'list.$.items': {id: 5, name: 'item5'}}}
+)
+
+User.update({ "_id": id,"answer.question_id" : question_id  },{ 
+                "$addToSet": { "answer":{"question_id":answer}} 
+            }
+Que. Delete object from array field
+db.mycollection.update(
+    {'_id': ObjectId("5150a1199fac0e6910000002")}, 
+    { $pull: { "items" : { id: 23 } } },
+false,
+true 
+);
+
+
+and multiple
+db.business_types.find({$and:[{name:"z"},{name:{$ne:"it"}}]}).pretty()
+
+## update array document field
+ db.users.update({"_id" : ObjectId("578f74f52b5cfdae7d4bc6db"),"answer.question_id":"578f4629364531b36f181dce" },{$set : {'answer.$.question_id':"57a18391d1792b6a34f68af8"}})
+
